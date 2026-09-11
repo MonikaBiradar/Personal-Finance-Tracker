@@ -1,5 +1,6 @@
 package com.monikabiradar.personalfinancetracker.entity;
 
+import com.monikabiradar.personalfinancetracker.enums.SavingsStatus;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -14,7 +15,12 @@ public class Savings {
 
     private String savingsName;
 
-    private BigDecimal balance;
+    private BigDecimal targetAmount;
+
+    private BigDecimal currentAmount;
+
+    @Enumerated(EnumType.STRING)
+    private SavingsStatus savingsStatus;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
