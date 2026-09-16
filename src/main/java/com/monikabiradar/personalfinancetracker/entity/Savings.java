@@ -25,4 +25,48 @@ public class Savings {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    public String getSavingsName() {
+        return savingsName;
+    }
+
+    public void setSavingsName(String savingsName) {
+        this.savingsName = savingsName;
+    }
+
+    public BigDecimal getTargetAmount() {
+        return targetAmount;
+    }
+
+    public void setTargetAmount(BigDecimal targetAmount) {
+        this.targetAmount = targetAmount;
+    }
+
+    public BigDecimal getCurrentAmount() {
+        return currentAmount;
+    }
+
+    public void setCurrentAmount(BigDecimal currentAmount) {
+        this.currentAmount = currentAmount;
+    }
+
+    public SavingsStatus getSavingsStatus() {
+        return savingsStatus;
+    }
+
+    public void setSavingsStatus(SavingsStatus savingsStatus) {
+        this.savingsStatus = savingsStatus;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Long getSavingsId() {
+        return savingsId;
+    }
 }

@@ -7,7 +7,6 @@ import com.monikabiradar.personalfinancetracker.dto.IncomeRequest;
 import com.monikabiradar.personalfinancetracker.entity.Income;
 import com.monikabiradar.personalfinancetracker.entity.User;
 import com.monikabiradar.personalfinancetracker.exception.UserNotFoundException;
-import com.monikabiradar.personalfinancetracker.repository.IncomeRepository;
 import com.monikabiradar.personalfinancetracker.repository.UserRepository;
 import com.monikabiradar.personalfinancetracker.service.IncomeService;
 import org.springframework.web.bind.annotation.*;
@@ -75,4 +74,4 @@ public class IncomeController {
         incomeService.updateIncome(incomeId,request.getNewIncomeAmount(),user);
     }
 }
-  
+
