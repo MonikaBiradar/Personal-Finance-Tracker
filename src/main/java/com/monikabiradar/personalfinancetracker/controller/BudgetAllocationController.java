@@ -4,9 +4,8 @@ import com.monikabiradar.personalfinancetracker.dto.BudgetAllocationRequest;
 import com.monikabiradar.personalfinancetracker.dto.BudgetTransferRequest;
 import com.monikabiradar.personalfinancetracker.entity.BudgetAllocation;
 import com.monikabiradar.personalfinancetracker.entity.User;
-import com.monikabiradar.personalfinancetracker.exception.UserNotFoundException;
-import com.monikabiradar.personalfinancetracker.repository.UserRepository;
 import com.monikabiradar.personalfinancetracker.service.BudgetAllocationService;
+import com.monikabiradar.personalfinancetracker.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,17 +14,17 @@ import org.springframework.web.bind.annotation.*;
 public class BudgetAllocationController {
 
     private final BudgetAllocationService budgetAllocationService;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public BudgetAllocationController(BudgetAllocationService budgetAllocationService, UserRepository userRepository) {
+    public BudgetAllocationController(BudgetAllocationService budgetAllocationService, UserService userService) {
         this.budgetAllocationService = budgetAllocationService;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @PostMapping("/users/{userId}/budget-allocations")
     public ResponseEntity<BudgetAllocation> addAllocation(@PathVariable Long userId, @RequestBody BudgetAllocationRequest request) {
 
-        User user = userRepository.findById(userId).orElseThrow(()-> new UserNotFoundException("User not found"));
+        User user = userService.findActiveUser(userId);
 
         BudgetAllocation budgetAllocation = budgetAllocationService.addAllocation(request, user);
 
@@ -35,7 +34,7 @@ public class BudgetAllocationController {
     @PatchMapping("/users/{userId}/budget-allocations/transfer")
     public ResponseEntity<Void> transferBudget(@PathVariable Long userId, @RequestBody BudgetTransferRequest request) {
 
-        User user = userRepository.findById(userId).orElseThrow(()-> new UserNotFoundException("User not found"));
+        User user = userService.findActiveUser(userId);
 
         budgetAllocationService.transferAllocation(request.getSourceAllocation(), request.getDestinationAllocation(), request.getAmount(), user);
 

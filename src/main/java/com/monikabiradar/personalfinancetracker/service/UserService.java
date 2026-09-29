@@ -47,9 +47,35 @@ public class UserService {
                 .orElseThrow(()-> new UserNotFoundException(
                         "User "+ userId + " Not Found."));
 
+        if(user.getUserStatus() == UserStatus.INACTIVE){
+            throw new UserNotFoundException("User "+ userId + " Not Active.");
+        }
         user.setUserStatus(UserStatus.INACTIVE);
         userRepository.save(user);
 
         return user;
+    }
+
+    public User findActiveUser(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(()-> new UserNotFoundException("User " + userId + " Not Found."));
+
+        if(user.getUserStatus() == UserStatus.INACTIVE) {
+            throw new UserNotFoundException("User " + userId + " Not Found.");
+        }
+
+        return user;
+    }
+
+    public User reactivateUser(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(()-> new UserNotFoundException("User " + userId + " Not Found."));
+
+        if(user.getUserStatus() == UserStatus.ACTIVE) {
+            throw new UserConflictException("User " + userId + " is already Active.");
+        }
+
+        user.setUserStatus(UserStatus.ACTIVE);
+        return userRepository.save(user);
     }
 }

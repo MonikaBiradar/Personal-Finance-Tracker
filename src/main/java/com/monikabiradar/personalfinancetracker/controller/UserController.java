@@ -25,8 +25,12 @@ public class UserController {
     }
 
     @PatchMapping("/users/{userId}/deactivate")
-    public User deactivateUser(@PathVariable Long userId)
-    {
+    public User deactivateUser(@PathVariable Long userId) {
         return userService.deactivateUser(userId);
+    }
+
+    @PatchMapping("/users/{userId}/reactivate")
+    public User reactivateUser(@PathVariable Long userId) {
+        return userService.reactivateUser(userId);
     }
 }
