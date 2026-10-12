@@ -15,4 +15,6 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     Optional<Expense> findByExpenseIdAndUserUserId(Long expenseId, Long userId);
 
     boolean existsByUserUserIdAndExpenseNameAndExpenseIdNot (Long userId, String expenseName, Long expenseId);
+
+    List<Expense> findByUserUserId(Long userId);
 }

@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 
 public class IncomeRequest {
     private String incomeName;
-    private BigDecimal incomeAmount;
     private UpdateFrequency updateFrequency;
 
 
@@ -16,14 +15,6 @@ public class IncomeRequest {
 
     public void setIncomeName(String incomeName) {
         this.incomeName = incomeName;
-    }
-
-    public BigDecimal getIncomeAmount() {
-        return incomeAmount;
-    }
-
-    public void setIncomeAmount(BigDecimal incomeAmount) {
-        this.incomeAmount = incomeAmount;
     }
 
     public UpdateFrequency getUpdateFrequency() {

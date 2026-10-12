@@ -12,4 +12,6 @@ public interface BudgetAllocationRepository extends JpaRepository<BudgetAllocati
     boolean existsByBudgetBudgetIdAndExpenseExpenseId(Long budgetId, Long expenseId);
 
     Optional<BudgetAllocation> findByAllocationIdAndBudgetUserUserId(Long allocationId, Long userId);
+
+    Optional<BudgetAllocation> findByBudgetBudgetIdAndExpenseExpenseId(Long budgetId, Long expenseId);
 }

@@ -17,6 +17,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Service
 public class BudgetAllocationService {
@@ -97,7 +98,11 @@ public class BudgetAllocationService {
             throw new IllegalArgumentException("Amount must be greater than 0.");
         }
 
-        BigDecimal spentAmount = transactionRepository.sumActiveExpenseAmount(user.getUserId(), source.getExpense().getExpenseId());
+        LocalDate today = LocalDate.now();
+        LocalDate startDate = today.withDayOfMonth(1);
+        LocalDate nextMonthStartDate = startDate.plusMonths(1);
+
+        BigDecimal spentAmount = transactionRepository.sumActiveExpenseAmount(user.getUserId(), source.getExpense().getExpenseId(), startDate, nextMonthStartDate);
 
         BigDecimal remainingAmount = source.getAllocatedAmount().subtract(spentAmount);
 

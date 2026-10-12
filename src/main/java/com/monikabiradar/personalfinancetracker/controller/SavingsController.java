@@ -5,11 +5,13 @@ import com.monikabiradar.personalfinancetracker.dto.NewTargetAmountRequest;
 import com.monikabiradar.personalfinancetracker.dto.SavingsRenameRequest;
 import com.monikabiradar.personalfinancetracker.dto.SavingsRequest;
 import com.monikabiradar.personalfinancetracker.entity.Savings;
+import com.monikabiradar.personalfinancetracker.entity.Transaction;
 import com.monikabiradar.personalfinancetracker.entity.User;
 import com.monikabiradar.personalfinancetracker.service.SavingsService;
 import com.monikabiradar.personalfinancetracker.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -27,7 +29,7 @@ public class SavingsController {
     public Savings addSavings(@PathVariable Long userId, @RequestBody SavingsRequest request) {
         User user = userService.findActiveUser(userId);
 
-        return savingsService.addSavings(request, user);
+        return savingsService.addSavings(request , user);
     }
 
     @PatchMapping("/users/{userId}/savings/{savingsId}/target")
@@ -52,6 +54,13 @@ public class SavingsController {
         return savingsService.searchSavings(name, user);
     }
 
+    @GetMapping("/users/{userId}/savings/display")
+    public List<Savings> displaySavings(@PathVariable Long userId) {
+
+        User user = userService.findActiveUser(userId);
+        return savingsService.displaySavings(user);
+    }
+
     @PatchMapping("/users/{userId}/savings/{savingsId}/rename")
     public void renameSavings(@PathVariable Long userId, @PathVariable Long savingsId, @RequestBody SavingsRenameRequest request) {
 
@@ -66,5 +75,29 @@ public class SavingsController {
         User user = userService.findActiveUser(userId);
 
         savingsService.removeSavings(savingsId, user);
+    }
+
+    @PostMapping("/users/{userId}/savings/{savingsId}/allocate")
+    public Transaction allocateSavings(@PathVariable Long userId, @PathVariable Long savingsId, @RequestParam BigDecimal amount) {
+
+        User user = userService.findActiveUser(userId);
+
+        return savingsService.allocateSavings(savingsId, amount, user);
+    }
+
+    @PostMapping("/users/{userId}/savings/{savingsId}/expenses/{expenseId}/record")
+    public Transaction recordExpenseFromSavings(@PathVariable Long userId, @PathVariable Long savingsId, @PathVariable Long expenseId, @RequestParam BigDecimal amount) {
+
+        User user = userService.findActiveUser(userId);
+
+        return savingsService.recordExpenseFromSavings(expenseId, savingsId, amount, user);
+    }
+
+    @PatchMapping("/users/{userId}/savings/transactions/{transactionId}/revert")
+    public Transaction revertSavingsTransaction(@PathVariable Long userId, @PathVariable Long transactionId) {
+
+        User user = userService.findActiveUser(userId);
+
+        return savingsService.revertSavingsTransaction(transactionId, user);
     }
 }

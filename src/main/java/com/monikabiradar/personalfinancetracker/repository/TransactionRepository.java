@@ -1,5 +1,6 @@
 package com.monikabiradar.personalfinancetracker.repository;
 
+import com.monikabiradar.personalfinancetracker.entity.Income;
 import com.monikabiradar.personalfinancetracker.entity.Transaction;
 import com.monikabiradar.personalfinancetracker.enums.TransactionType;
 import org.springframework.data.domain.Sort;
@@ -27,6 +28,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long>,
 
     Optional<Transaction> findByTransactionIdAndUserUserId(Long transactionId, Long userId);
 
+    Optional<Transaction> findByTransactionIdAndIncomeIncomeIdAndUserUserId(Long transactionId, Long incomeId, Long userId);
+
     @Query("""
     SELECT COALESCE(SUM(t.amount), 0)
     FROM Transaction t
@@ -36,6 +39,9 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long>,
           com.monikabiradar.personalfinancetracker.enums.TransactionType.EXPENSE
       AND t.transactionStatus =
           com.monikabiradar.personalfinancetracker.enums.TransactionStatus.ACTIVE
+      AND t.transactionDate >= :startDate
+      AND t.transactionDate < :nextMonthStartDate
     """)
-    BigDecimal sumActiveExpenseAmount (@Param("userId") Long userId,@Param("expenseId") Long expenseId);
+    BigDecimal sumActiveExpenseAmount (@Param("userId") Long userId, @Param("expenseId") Long expenseId, @Param("startDate") LocalDate startDate, @Param("nextMonthStartDate") LocalDate nextMonthStartDate);
+
 }

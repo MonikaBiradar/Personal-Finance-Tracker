@@ -1,7 +1,6 @@
 package com.monikabiradar.personalfinancetracker.service;
 
-import com.monikabiradar.personalfinancetracker.entity.Transaction;
-import com.monikabiradar.personalfinancetracker.entity.User;
+import com.monikabiradar.personalfinancetracker.entity.*;
 import com.monikabiradar.personalfinancetracker.enums.TransactionStatus;
 import com.monikabiradar.personalfinancetracker.enums.TransactionType;
 import com.monikabiradar.personalfinancetracker.exception.TransactionNotFoundException;
@@ -25,16 +24,44 @@ public class TransactionService {
 
     public Transaction addTransaction(TransactionType transactionType, BigDecimal amount, User user) {
 
-        Transaction transaction = new Transaction();
-
-        transaction.setAmount(amount);
-        transaction.setTransactionType(transactionType);
-        transaction.setTransactionStatus(TransactionStatus.ACTIVE);
-        transaction.setTransactionDate(LocalDate.now());
-        transaction.setUser(user);
+        Transaction transaction = createTransaction(transactionType, amount, user);
 
         return transactionRepository.save(transaction);
     }
+
+    public Transaction addTransaction(TransactionType transactionType, BigDecimal amount, User user, Expense expense) {
+
+        Transaction transaction = createTransaction(transactionType, amount, user);
+        transaction.setExpense(expense);
+
+        return transactionRepository.save(transaction);
+    }
+
+    public Transaction addTransaction(TransactionType transactionType, BigDecimal amount, User user, Income income) {
+
+        Transaction transaction = createTransaction(transactionType, amount, user);
+        transaction.setIncome(income);
+
+        return transactionRepository.save(transaction);
+    }
+
+    public Transaction addTransaction(TransactionType transactionType,BigDecimal amount, User user, Expense expense, Savings savings) {
+
+        Transaction transaction = createTransaction(transactionType, amount, user);
+        transaction.setExpense(expense);
+        transaction.setSavings(savings);
+
+        return transactionRepository.save(transaction);
+    }
+
+    public Transaction addTransaction(TransactionType transactionType, BigDecimal amount, User user, Savings savings) {
+
+        Transaction transaction = createTransaction(transactionType, amount, user);
+        transaction.setSavings(savings);
+
+        return transactionRepository.save(transaction);
+    }
+
 
     public List<Transaction> displayTransaction(User user){
          return transactionRepository.findByUserUserId(user.getUserId());
@@ -93,5 +120,18 @@ public class TransactionService {
 
         transaction.setTransactionStatus(TransactionStatus.REVERTED);
         return transactionRepository.save(transaction);
+    }
+
+    private Transaction createTransaction(TransactionType transactionType, BigDecimal amount, User user) {
+
+        Transaction transaction = new Transaction();
+
+        transaction.setAmount(amount);
+        transaction.setTransactionType(transactionType);
+        transaction.setTransactionStatus(TransactionStatus.ACTIVE);
+        transaction.setTransactionDate(LocalDate.now());
+        transaction.setUser(user);
+
+        return transaction;
     }
 }

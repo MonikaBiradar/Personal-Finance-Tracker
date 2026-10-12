@@ -14,4 +14,6 @@ public interface SavingsRepository extends JpaRepository<Savings, Long> {
 
     boolean existsByUserUserIdAndSavingsNameAndSavingsIdNot (Long userId, String SavingsName, Long SavingsId);
 
+    List<Savings> findByUserUserId(Long userId);
+
 }
